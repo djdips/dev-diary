@@ -1,0 +1,31 @@
+{
+  "name": "dev-diary",
+  "version": "1.0.0",
+  "description": "A lightweight Markdown-powered blog engine built with Node.js + TypeScript.",
+  "main": "index.js",
+  "scripts": {
+    "start": "deno run --allow-net --allow-read --allow-write mod.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/djdips/dev-diary.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/djdips/dev-diary/issues"
+  },
+  "homepage": "https://github.com/djdips/dev-diary#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "marked": "^15.0.12",
+    "slugify": "^1.6.6"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.0.3",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.8.3"
+  }
+}

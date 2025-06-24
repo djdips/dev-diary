@@ -1,0 +1,20 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 1rem 2rem;
+  max-width: 700px;
+}
+
+h1, h2 {
+  color: #333;
+}
+
+#posts li {
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  color: blue;
+  text-decoration: underline;
+}
+
+#back-button {
+  margin-bottom: 1rem;
+}
