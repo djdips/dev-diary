@@ -1,5 +1,5 @@
 import { load } from "../deps.ts";
-import { MetadataResult } from "../types/metadata.ts";
+import { Metadata, MetadataResult } from "../types/metadata.ts";
 
 export function parseMetadata(raw: string): MetadataResult {
   const METADATA_REGEX = /^---\n([\s\S]+?)\n---\n([\s\S]*)$/m;
@@ -14,6 +14,6 @@ export function parseMetadata(raw: string): MetadataResult {
 
   const [, yamlRaw, content] = match;
 
-  const metadata = load(yamlRaw);
+  const metadata = load(yamlRaw) as Metadata;
   return { metadata, content };
 }

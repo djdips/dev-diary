@@ -1,137 +1,115 @@
-# 📝 DevDiary – Markdown Blog API in Deno
+# 📝 DevDiary
 
-DevDiary is a lightweight, file-based blog engine built with **Deno** that lets you write and serve blog posts written in **Markdown**. It exposes a clean REST API to list, fetch, create, and delete posts — no database required.
-
----
+A simple Markdown blog engine built with **Deno**, supporting YAML frontmatter metadata, tag-based filtering, and a minimal frontend interface.
 
 ## 🚀 Features
 
-- ⚡ Fast and simple REST API
-- 📄 Markdown to HTML conversion using [`marked`](https://marked.js.org/)
-- 🗂️ File-based post storage (`posts/`)
-- 🛠️ Built with modern **Deno**
-- 🔐 Secure by default (requires permissions to read/write files)
-- ☁️ Easy to deploy (no DB, runs anywhere)
+- 📄 Create and read Markdown blog posts  
+- 🧠 Supports frontmatter metadata via YAML (`title`, `date`, `tags`)  
+- 🏷 Filter posts by tag via API  
+- 🌐 Serve static HTML, CSS, and JS frontend  
+- 📦 Fully modular TypeScript backend with route controllers  
 
----
-
-## 📦 Project Structure
+## 🗂️ Project Structure
 
 ```
-dev-diary-deno/
-├── posts/              # Markdown files stored as posts
-├── mod.ts              # Entry point (Deno HTTP server)
-├── routes.ts           # API logic (GET/POST/DELETE)
-├── deps.ts             # Imported dependencies
-└── README.md
+dev-diary/
+├── controllers/ # API logic per route
+│ ├── createPost.ts
+│ ├── deletePost.ts
+│ ├── getPost.ts
+│ ├── getPostMeta.ts
+│ ├── getPostsByTag.ts
+│ └── listPosts.ts
+│
+├── public/ # Static frontend files
+│ ├── index.html
+│ ├── styles.css
+│ └── script.js
+│
+├── posts/ # Markdown blog posts
+│
+├── routes.ts # Route definitions and request matching
+├── deps.ts # All external imports centralized
+├── mod.ts # Main server entry point
+│
+├── utils/ # Reusable helpers
+│ ├── parseFrontmatter.ts
+│ └── validateMetadata.ts
+│
+├── README.md
+└── .gitignore
 ```
 
----
+## 📦 Tech Stack
 
-## 🧪 API Endpoints
+- **Deno** — secure, modern runtime with native TypeScript  
+- **Marked** — for Markdown to HTML conversion  
+- **js-yaml** — to parse YAML frontmatter  
+- **Vanilla JS** — minimal frontend (no frameworks)  
 
-### `GET /posts`
-List all available blog posts (by slug).
+## ⚙️ Requirements
 
-**Response:**
-```json
-["hello-world", "my-first-post"]
+- [Deno](https://deno.land/) v1.40+ installed
+
+## 🏃‍♂️ Getting Started
+
+1. **Clone the repository**
+
+```
+git clone https://github.com/your-username/dev-diary.git
+cd dev-diary
 ```
 
----
+2. **Run the server**
 
-### `GET /post/:slug`
-Get a specific post rendered as HTML.
-
-**Example:**  
-`GET /post/hello-world`
-
-**Response:**  
-HTML content rendered from `posts/hello-world.md`
-
----
-
-### `POST /post`
-Create a new post.
-
-**Request:**
-```json
-{
-  "title": "My First Post",
-  "content": "# Hello\nThis is my first post!"
-}
 ```
-
-**Response:**
-```json
-{
-  "message": "Post created",
-  "slug": "my-first-post"
-}
-```
-
----
-
-### `DELETE /post/:slug`
-Delete a post.
-
-**Response:**
-```json
-{
-  "message": "Post deleted",
-  "slug": "my-first-post"
-}
-```
-
----
-
-## 🛠️ Running the Project
-
-### 🔧 Permissions Required:
-```bash
 deno run --allow-net --allow-read --allow-write mod.ts
 ```
 
-> Deno is secure by default. We explicitly allow network and file access.
+3. **Open the app**
 
----
-
-## 🧱 Example Markdown File
-
-**`posts/hello-world.md`**
-```md
-# Hello World
-
-Welcome to **DevDiary**!
-
-This is your first post.
+```
+Visit http://localhost:8000 in your browser.
 ```
 
+## ✍️ Writing a Post
+
+Create a `.md` file inside the `posts/` directory. Example:
+
+```markdown
+---
+title: Hello Deno
+date: 2025-06-25
+tags:
+  - deno
+  - typescript
 ---
 
-## 📌 TODO
+This is your first DevDiary post!
 
-- [ ] Add frontmatter metadata (tags, date)
-- [ ] Filter posts by tag
-- [ ] Render summary previews
-- [ ] Optional: Serve static blog frontend
+It supports **Markdown** and `code blocks`.
 
----
+## 🧪 API Endpoints
 
-## 👨‍💻 Author
+- `GET /posts` → List all post slugs  
+- `GET /post/:slug` → Render full HTML content  
+- `GET /post/:slug/meta` → Return metadata (title, date, tags)  
+- `GET /tag/:tagName` → Posts filtered by tag  
+- `POST /post` → Create new post (expects JSON: `{ title, content }`)  
+- `DELETE /post/:slug` → Delete a post by slug  
 
-**Dipen Shah**  
-Building clean, cross-platform tools using modern stacks.  
-[GitHub Profile »](https://github.com/your-username)
+## 🧹 .gitignore
 
----
+```gitignore
+.DS_Store
+*.log
+node_modules/
+.env
+```
 
 ## 📄 License
 
-MIT
-
----
-
-## 💡 Tip
-
-Use it as a headless backend for your SSG/Next.js blog or a minimal portfolio!
+```
+MIT License
+```

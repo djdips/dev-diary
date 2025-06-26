@@ -6,6 +6,6 @@ export interface Metadata {
 }
 
 export interface MetadataResult {
-  metadata: Record<string, Metadata>;
+  metadata: Metadata;
   content: string;
 }

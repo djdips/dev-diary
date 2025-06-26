@@ -1,12 +1,13 @@
 import { marked } from "../deps.ts";
 import { join } from "../deps.ts";
+import { RequestParams } from "../routes.ts";
 import { parseMetadata } from "../utils/parseMetadata.ts";
 
 const POSTS_DIR = "posts";
 
-export async function getPost(_: Request, params?: Record<string, string>): Promise<Response> {
-  const slug = params?.slug;
-  if (!slug) return new Response("Bad Request", { status: 400 });
+export async function getPost(_: Request, params?: RequestParams): Promise<Response> {
+  const slug = params?.pathParams?.slug;
+  if (!slug) return new Response("Bad Request - Missing or Incorrect Slug", { status: 400 });
 
   const filepath = join(POSTS_DIR, `${slug}.md`);
 

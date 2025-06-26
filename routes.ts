@@ -4,21 +4,37 @@ import { createPost } from "./controllers/createPost.ts";
 import { deletePost } from "./controllers/deletePost.ts";
 import { getPostMeta } from "./controllers/getPostMeta.ts";
 import { getPostsByTag } from "./controllers/getPostsByTag.ts";
+import { searchPosts } from "./controllers/searchPosts.ts";
+import { login } from "./controllers/login.ts";
+import { withAuth } from "./middleware/auth.ts";
+import { editPostBySlug } from "./controllers/editPostBySlug.ts";
+import { refreshTokenHandler } from "./controllers/refreshToken.ts";
 
-type RouteHandler = (req: Request, params?: Record<string, string>) => Promise<Response>;
+export type RequestParams = {
+  pathParams: Record<string, string>;
+  queryParams: Record<string, string>;
+};
+
+type RouteHandler = (req: Request, params?: RequestParams) => Promise<Response>;
 
 const routes: Record<string, Record<string, RouteHandler>> = {
   GET: {
-    "/posts": listPosts,
-    "/post/:slug": getPost,
-    "/post/:slug/meta": getPostMeta,
-    "/tag/:tagName": getPostsByTag,
+    "/posts": (req) => withAuth(req, () => listPosts()),
+    "/post/:slug": (req, params) => withAuth(req, () => getPost(req, params)),
+    "/post/:slug/meta": (req, params) => withAuth(req, () => getPostMeta(req, params)),
+    "/tag/:tagName": (req, params) => withAuth(req, () => getPostsByTag(req, params)),
+    "/search": (req, params) => withAuth(req, () => searchPosts(req, params)),
   },
   POST: {
-    "/post": createPost,
+    "/post": (req) => withAuth(req, () => createPost(req)),
+    "/login": login,
+    "/refresh-token": refreshTokenHandler, // Assuming refreshToken is handled in login
+  },
+  PUT: {
+    "/post/:slug": (req, params) => withAuth(req, () => editPostBySlug(req, params)),
   },
   DELETE: {
-    "/post/:slug": deletePost,
+    "/post/:slug": (req, params) => withAuth(req, () => deletePost(req, params)),
   },
 };
 
@@ -32,7 +48,13 @@ export async function handleRequest(req: Request): Promise<Response> {
   for (const pattern in methodRoutes) {
     const match = matchRoute(pattern, url.pathname);
     if (match) {
-      return await methodRoutes[pattern](req, match.params);
+      
+      const queryParams: Record<string, string> = {};
+      url.searchParams.forEach((value, key) => {
+        queryParams[key] = value;
+      });
+
+      return await methodRoutes[pattern](req, {pathParams: match.params, queryParams: queryParams} as RequestParams);
     }
   }
 
