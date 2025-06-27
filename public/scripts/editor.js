@@ -38,6 +38,10 @@ export function initEditor() {
                 form.reset()
                 form.removeAttribute("data-editing")
                 previewDiv.innerHTML = ""
+
+                document.getElementById("create-post").style.display = "none"
+                document.getElementById("posts-list").style.display = "block"
+
                 showSuccess("✅ Post saved successfully!")
                 document.dispatchEvent(new CustomEvent("posts:reload"))
             } else {

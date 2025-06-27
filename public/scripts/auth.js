@@ -47,16 +47,15 @@ export function setupLogout() {
 }
 
 export function toggleAuthUI(isLoggedIn) {
-    document.getElementById("login-section").style.display = isLoggedIn
-        ? "none"
-        : "block"
-    document.getElementById("create-post").style.display = isLoggedIn
-        ? "block"
-        : "none"
-    document.getElementById("logout-button").style.display = isLoggedIn
-        ? "inline-block"
-        : "none"
+  document.getElementById("login-section").style.display = isLoggedIn ? "none" : "block";
+  document.getElementById("app-ui").style.display = isLoggedIn ? "block" : "none";
+
+  // Reset views
+  document.getElementById("create-post").style.display = "none";
+  document.getElementById("post-view").style.display = "none";
+  document.getElementById("posts-list").style.display = isLoggedIn ? "block" : "none";
 }
+
 
 let refreshTimeout
 
@@ -94,11 +93,11 @@ function logoutUser() {
 }
 
 export function initAuth() {
-  const token = localStorage.getItem("devdiary_token");
-  if (token) {
-    toggleAuthUI(true);
-    scheduleTokenRefresh();
-  } else {
-    toggleAuthUI(false);
-  }
+    const token = localStorage.getItem("devdiary_token")
+    if (token) {
+        toggleAuthUI(true)
+        scheduleTokenRefresh()
+    } else {
+        toggleAuthUI(false)
+    }
 }

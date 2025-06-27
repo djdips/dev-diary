@@ -1,16 +1,18 @@
-import { join } from "https://deno.land/std@0.224.0/path/mod.ts";
-import { RequestParams } from "../routes.ts";
+import { storage } from "../lib/storage/index.ts"
+import { RequestParams } from "../routes.ts"
+import { errorResponse } from "../utils/errors.ts"
 
-export async function deletePost(_: Request, params?: RequestParams): Promise<Response> {
-  const POSTS_DIR = "posts";
-  const slug = params?.pathParams?.slug;
-  if (!slug) return new Response("Bad Request", { status: 400 });
-
-  const filepath = join(POSTS_DIR, `${slug}.md`);
-  try {
-    await Deno.remove(filepath);
-    return Response.json({ message: "Post deleted", slug });
-  } catch {
-    return new Response("Post not found", { status: 404 });
-  }
+export async function deletePost(
+    _req: Request,
+    params: RequestParams
+): Promise<Response> {
+    try {
+        const slug = params?.pathParams.slug
+        
+        await storage.deletePost(slug)
+        return new Response("Post deleted", { status: 200 })
+    } catch (err) {
+        console.error(err)
+        return errorResponse("Failed to delete post", 500)
+    }
 }

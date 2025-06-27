@@ -1,10 +1,14 @@
+import { storage } from "../lib/storage/index.ts"
+import { errorResponse } from "../utils/errors.ts"
+
 export async function listPosts(): Promise<Response> {
-  const POSTS_DIR = "posts";
-  const posts: string[] = [];
-  for await (const entry of Deno.readDir(POSTS_DIR)) {
-    if (entry.isFile && entry.name.endsWith(".md")) {
-      posts.push(entry.name.replace(".md", ""));
+    try {
+        const slugs = await storage.listSlugs()
+        return new Response(JSON.stringify(slugs), {
+            headers: { "Content-Type": "application/json" },
+        })
+    } catch (err) {
+        console.error("Failed to list posts:", err)
+        return errorResponse("Failed to list posts", 500)
     }
-  }
-  return Response.json(posts);
 }

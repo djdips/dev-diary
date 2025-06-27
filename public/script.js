@@ -2,26 +2,7 @@ const postsList = document.getElementById("posts")
 const postView = document.getElementById("post-view")
 const postContent = document.getElementById("post-content")
 const backButton = document.getElementById("back-button")
-const postForm = document.getElementById("post-form")
 const formMsg = document.getElementById("form-msg")
-
-function loadPostForEdit(slug) {
-  fetch(`/post/${slug}`)
-    .then(res => res.text())
-    .then(content => {
-      document.getElementById("title").value = slug; // assuming slug is title
-      document.getElementById("content").value = content;
-      document.getElementById("post-form").dataset.editing = slug;
-
-      // Trigger preview
-      const event = new Event("input");
-      document.getElementById("content").dispatchEvent(event);
-
-      // Show form, hide post view
-      document.getElementById("post-view").style.display = "none";
-      document.getElementById("create-post").style.display = "block";
-    });
-}
 
 
 async function fetchPosts(tag = null) {
@@ -78,9 +59,6 @@ async function showPost(slug) {
     document.getElementById("posts-list").style.display = "none"
     document.getElementById("create-post").style.display = "none"
     postView.style.display = "block"
-
-    const editButton = document.getElementById("edit-button")
-    editButton.onclick = () => loadPostForEdit(slug)
 }
 
 backButton.onclick = () => {

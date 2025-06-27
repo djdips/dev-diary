@@ -1,43 +1,21 @@
-import { join } from "../deps.ts"
+import { storage } from "../lib/storage/index.ts"
 import { RequestParams } from "../routes.ts"
-import { parseMetadata } from "../utils/parseMetadata.ts"
+import { errorResponse } from "../utils/errors.ts"
 
 export async function searchPosts(
-    _: Request,
-    params?: RequestParams
+    _req: Request,
+    params: RequestParams
 ): Promise<Response> {
-    const POSTS_DIR = "posts"
-    const query = params?.queryParams?.q
-    
-    if (!query) {
-        return new Response(JSON.stringify([]), {
+    const query = params?.queryParams.q || ""
+    if (!query) return errorResponse("Query required", 400)
+
+    try {
+        const slugs = await storage.searchPosts(query)
+        return new Response(JSON.stringify(slugs), {
             headers: { "Content-Type": "application/json" },
         })
+    } catch (err) {
+        console.error("Failed to search posts:", err)
+        return errorResponse("Failed to search posts", 500)
     }
-
-    const files = []
-    for await (const entry of Deno.readDir(POSTS_DIR)) {
-        if (entry.isFile && entry.name.endsWith(".md")) {
-            files.push(entry.name)
-        }
-    }
-
-    const matchedSlugs: string[] = []
-
-    for (const fileName of files) {
-        const filePath = join(POSTS_DIR, fileName)
-        const raw = await Deno.readTextFile(filePath)
-        const { metadata, content } = parseMetadata(raw)
-
-        if (
-            (metadata.title && metadata.title.includes(query)) ||
-            (metadata.tags && metadata.tags.includes(query)) ||
-            content.includes(query)
-        ) {
-            matchedSlugs.push(fileName.replace(".md", ""))
-        }
-    }
-    return new Response(JSON.stringify(matchedSlugs), {
-        headers: { "Content-Type": "application/json" },
-    })
 }

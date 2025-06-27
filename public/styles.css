@@ -1,116 +1,166 @@
 /* Base Reset */
-body, h1, h2, h3, ul, li, button, input, textarea {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
-  box-sizing: border-box;
+body,
+h1,
+h2,
+h3,
+ul,
+li,
+button,
+input,
+textarea {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    box-sizing: border-box;
 }
 
 body {
-  padding: 1rem;
-  line-height: 1.6;
-  background-color: #f5f5f5;
-  color: #222;
-  transition: background-color 0.3s ease, color 0.3s ease;
+    padding: 1rem;
+    line-height: 1.6;
+    background-color: #f5f5f5;
+    color: #222;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 h1 {
-  margin-bottom: 1rem;
+    margin-bottom: 1rem;
 }
 
 ul {
-  list-style: none;
-  margin-top: 0.5rem;
-  padding-left: 0;
+    list-style: none;
+    margin-top: 0.5rem;
+    padding-left: 0;
 }
 
 li {
-  cursor: pointer;
-  padding: 0.5rem;
-  border-bottom: 1px solid #ccc;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-bottom: 1px solid #ccc;
 }
 
 li:hover {
-  background-color: #eee;
+    background-color: #eee;
 }
 
 input[type="text"],
 input[type="password"],
 textarea {
-  width: 100%;
-  padding: 0.5rem;
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
-  border: 1px solid #bbb;
-  border-radius: 4px;
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #bbb;
+    border-radius: 4px;
 }
 
 button {
-  padding: 0.5rem 1rem;
-  margin-top: 0.5rem;
-  cursor: pointer;
-  border: none;
-  border-radius: 4px;
-  background-color: #0077cc;
-  color: white;
+    padding: 0.5rem 1rem;
+    margin-top: 0.5rem;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    background-color: #0077cc;
+    color: white;
 }
 
 button:hover {
-  background-color: #005fa3;
+    background-color: #005fa3;
 }
 
 .preview-box {
-  background: #fff;
-  padding: 1rem;
-  border: 1px solid #ddd;
-  margin-top: 1rem;
+    background: #fff;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    margin-top: 1rem;
 }
 
 .error {
-  color: red;
-  margin-top: 0.5rem;
+    color: red;
+    margin-top: 0.5rem;
+}
+
+textarea {
+    width: 100%;
+    height: 200px;
+    margin-top: 0.5em;
+}
+
+#markdown-preview {
+    padding: 1em;
+    border: 1px dashed #ccc;
+    margin-top: 1em;
+    background: #f9f9f9;
 }
 
 /* Light/Dark Theme */
 body.light {
-  background-color: #f5f5f5;
-  color: #222;
+    background-color: #f5f5f5;
+    color: #222;
 }
 
 body.dark {
-  background-color: #1c1c1c;
-  color: #eee;
+    background-color: #1c1c1c;
+    color: #eee;
 }
 
 body.dark li:hover {
-  background-color: #333;
+    background-color: #333;
 }
 
 body.dark .preview-box {
-  background-color: #2a2a2a;
-  color: #ddd;
-  border-color: #444;
+    background-color: #2a2a2a;
+    color: #ddd;
+    border-color: #444;
 }
 
 body.dark input,
 body.dark textarea {
-  background-color: #2a2a2a;
-  color: #ddd;
-  border-color: #444;
+    background-color: #2a2a2a;
+    color: #ddd;
+    border-color: #444;
 }
 
 body.dark button {
-  background-color: #005fa3;
+    background-color: #005fa3;
 }
 
 header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
 }
 
 #logout-button,
 #theme-toggle {
-  margin-left: 0.5rem;
+    margin-left: 0.5rem;
+}
+
+.hidden {
+    display: none;
+}
+
+#loading-indicator,
+#success-msg,
+#error-msg {
+    padding: 0.5em 1em;
+    margin: 1em 0;
+    font-weight: bold;
+    border-radius: 6px;
+    max-width: 600px;
+}
+
+#success-msg {
+    background: #d2ffd2;
+    border: 1px solid #39a839;
+}
+
+#error-msg {
+    background: #ffd2d2;
+    border: 1px solid #d03939;
+}
+
+#loading-indicator {
+    background: #fff4cc;
+    border: 1px solid #e0c100;
 }

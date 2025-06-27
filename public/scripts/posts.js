@@ -41,6 +41,18 @@ export function initPosts() {
         loadPostForEdit(slug)
     })
 
+    document.getElementById("new-post-btn").onclick = () => {
+        document.getElementById("create-post").style.display = "block"
+        document.getElementById("posts-list").style.display = "none"
+        document.getElementById("post-view").style.display = "none"
+        document.getElementById("post-form").reset()
+    }
+
+    document.getElementById("cancel-create").onclick = () => {
+        document.getElementById("create-post").style.display = "none"
+        document.getElementById("posts-list").style.display = "block"
+    }
+
     document.addEventListener("posts:reload", fetchPosts)
     fetchPosts()
 }
