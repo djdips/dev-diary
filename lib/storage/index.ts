@@ -4,16 +4,17 @@ import { dbStorage } from "./dbStorage.ts";
 import { StorageAdapter } from "../storage.ts";
 import { STORAGE_MODE } from "../../config.ts";
 
-let storage: StorageAdapter;
+let activeStorage: StorageAdapter =
+  STORAGE_MODE === "db" ? dbStorage : fileStorage;
 
-switch (STORAGE_MODE) {
-  case "db":
-    storage = dbStorage;
-    break;
-  case "file":
-  default:
-    storage = fileStorage;
-    break;
-}
-
-export { storage };
+export const storage = {
+  get adapter() {
+    return activeStorage;
+  },
+  set adapter(newAdapter: StorageAdapter) {
+    activeStorage = newAdapter;
+  },
+  get name(): string {
+    return activeStorage?.constructor?.name ?? "unknown";
+  },
+};

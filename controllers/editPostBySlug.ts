@@ -1,14 +1,14 @@
-import { storage } from "../lib/storage/index.ts";
-import { errorResponse } from "../utils/errors.ts";
-import { parseMetadata } from "../utils/parseMetadata.ts";
-import { validatePostContent, validateSlug } from "../utils/validation.ts";
+import { storage } from "../lib/storage/index.ts"
+import { errorResponse } from "../utils/errors.ts"
+import { parseMetadata } from "../utils/parseMetadata.ts"
+import { validatePostContent, validateSlug } from "../utils/validation.ts"
 
 export async function editPostBySlug(
     req: Request,
     params?: { pathParams?: { slug?: string } }
 ): Promise<Response> {
     const slug = params?.pathParams?.slug
-    if (!slug) return new Response("Missing slug", { status: 400 })
+    if (!slug) return errorResponse("Missing slug", 400)
 
     const body = await req.json()
     const { content } = body
@@ -26,7 +26,7 @@ export async function editPostBySlug(
     }
 
     try {
-        const oldContent = await storage.getPost(slug)
+        const oldContent = await storage.adapter.getPost(slug)
         if (!oldContent) {
             return errorResponse("Post not found", 404)
         }
@@ -46,7 +46,7 @@ export async function editPostBySlug(
 
         const updatedContent = `---\n${frontmatter}\n---\n${content}`
 
-        await storage.savePost(slug, updatedContent)
+        await storage.adapter.savePost(slug, updatedContent)
         return new Response("Post updated", { status: 200 })
     } catch (err) {
         console.error(err)

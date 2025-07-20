@@ -4,14 +4,14 @@ import { errorResponse } from "../utils/errors.ts"
 
 export async function getPostsByTag(
     _req: Request,
-    params: RequestParams
+    params?: RequestParams
 ): Promise<Response> {
     const tagName = params?.pathParams.tagName
 
     if (!tagName) return errorResponse("Tag required", 400)
 
     try {
-        const slugs = await storage.getPostsByTag(tagName)
+        const slugs = await storage.adapter.getPostsByTag(tagName)
         return new Response(JSON.stringify(slugs), {
             headers: { "Content-Type": "application/json" },
         })

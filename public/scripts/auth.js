@@ -1,4 +1,6 @@
 import { showLoading, showError, showSuccess } from "./helpers.js"
+import { fetchPosts } from "./posts.js";
+
 
 export function setupLogin() {
     const loginForm = document.getElementById("login-form")
@@ -26,6 +28,7 @@ export function setupLogin() {
                 toggleAuthUI(true)
                 showSuccess("Login successful!")
                 scheduleTokenRefresh()
+                fetchPosts() // Reload posts after login
             } else if (res.status === 401) {
                 showError("Invalid username or password")
             } else {

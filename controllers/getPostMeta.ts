@@ -4,11 +4,13 @@ import { errorResponse } from "../utils/errors.ts"
 
 export async function getPostMeta(
     _req: Request,
-    params: RequestParams
+    params?: RequestParams
 ): Promise<Response> {
     try {
         const slug = params?.pathParams.slug
-        const metadata = await storage.getMetadata(slug)
+        if (!slug) return errorResponse("Missing slug", 400)
+
+        const metadata = await storage.adapter.getMetadata(slug)
 
         if (!metadata) {
             return errorResponse("Post not found", 404)

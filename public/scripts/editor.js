@@ -1,5 +1,6 @@
 import { authFetch } from "./api.js"
 import { showLoading, showSuccess, showError } from "./helpers.js" // assuming these are exported from a common module
+import { marked } from "https://esm.sh/marked@9.1.4"
 
 export function initEditor() {
     const contentInput = document.getElementById("content")

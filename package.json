@@ -4,7 +4,8 @@
   "description": "A lightweight Markdown-powered blog engine built with Node.js + TypeScript.",
   "main": "index.js",
   "scripts": {
-    "start": "deno run --allow-net --allow-read --allow-write main.ts"
+    "start": "deno run --allow-net --allow-read --allow-write main.ts",
+    "test": "deno test --allow-read tests/**/*.test.ts"
   },
   "repository": {
     "type": "git",

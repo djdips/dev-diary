@@ -3,7 +3,7 @@ import { errorResponse } from "../utils/errors.ts"
 
 export async function listPosts(): Promise<Response> {
     try {
-        const slugs = await storage.listSlugs()
+        const slugs = await storage.adapter.listSlugs()
         return new Response(JSON.stringify(slugs), {
             headers: { "Content-Type": "application/json" },
         })

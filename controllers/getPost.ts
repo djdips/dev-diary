@@ -5,10 +5,12 @@ import { errorResponse } from "../utils/errors.ts"
 
 export async function getPost(
     _req: Request,
-    params: RequestParams
+    params?: RequestParams
 ): Promise<Response> {
     const slug = params?.pathParams.slug
-    const content = await storage.getPost(slug)
+    if (!slug) return errorResponse("Missing slug", 400)
+
+    const content = await storage.adapter.getPost(slug)
 
     if (!content) {
         return errorResponse("Post not found", 404)
