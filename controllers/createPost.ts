@@ -22,10 +22,6 @@ export async function createPost(
         return errorResponse("Invalid slug", 400)
     }
 
-    if (!validatePostContent(content)) {
-        return errorResponse("Content cannot be empty", 400)
-    }
-
     try {
         const fullContent = `---\ntitle: ${title}\ndate: ${new Date().toISOString()}\ntags: []\n---\n${content}`
 

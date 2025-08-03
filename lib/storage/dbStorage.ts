@@ -74,7 +74,7 @@ export const dbStorage: StorageAdapter = {
             const rows = [...db.query("SELECT slug, tags FROM posts")]
             for (const [slug, tags] of rows) {
                 const tagsArr = JSON.parse(tags as string)
-                if (tagsArr.includes(tag)) {
+                if (tagsArr.some((t: string) => t.toLowerCase() === tag.toLowerCase())) {
                     matched.push(slug as string)
                 }
             }

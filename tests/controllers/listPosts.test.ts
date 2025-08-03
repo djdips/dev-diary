@@ -17,15 +17,6 @@ tags: [test]
 ---
 This is a test post.`
 
-// Helper to mock a request
-function mockRequest(body?: any): Request {
-    return new Request("http://localhost/post", {
-        method: "POST",
-        body: JSON.stringify(body),
-        headers: { "Content-Type": "application/json" },
-    })
-}
-
 async function runTests(adapterName: string, adapter: typeof storage.adapter) {
     Deno.test(
         `getAllPosts: returns list with slug (${adapterName})`,

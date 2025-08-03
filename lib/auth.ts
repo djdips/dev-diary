@@ -5,7 +5,7 @@ interface TokenData {
   expiresAt: number;
 }
 
-const tokenStore = new Map<string, TokenData>();
+export const tokenStore = new Map<string, TokenData>();
 
 const TOKEN_LIFETIME_MS = 1000 * 60 * 15; // 15 minutes
 

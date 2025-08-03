@@ -1,0 +1,38 @@
+---
+
+## ✅ 2. GitHub Actions CI Workflow (`.github/workflows/ci.yml`)
+
+```yaml
+name: Deno CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🧾 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 🦕 Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+
+      - name: 🔍 Lint
+        run: deno lint
+
+      - name: ✅ Run Tests with Coverage
+        run: |
+          deno test --allow-read --allow-write --allow-net --allow-env --allow-run --coverage=coverage
+          deno coverage coverage --lcov > coverage.lcov
+
+      - name: ⬆️ Upload Coverage to Codecov (optional)
+        uses: codecov/codecov-action@v3
+        with:
+          files: coverage.lcov
+          fail_ci_if_error: false

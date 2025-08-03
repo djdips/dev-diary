@@ -1,14 +1,24 @@
-# 📝 DevDiary
+![Deno CI](https://github.com/djdips/dev-diary/actions/workflows/ci.yml/badge.svg)
+![Coverage](https://img.shields.io/badge/coverage-72%25-yellowgreen)
 
-A simple Markdown blog engine built with **Deno**, supporting YAML frontmatter metadata, tag-based filtering, and a minimal frontend interface.
+# DevDiary 📝 – Markdown Blog Engine (Deno + TypeScript)
 
-## 🚀 Features
+A simple yet powerful Markdown blog engine built using Deno and TypeScript. Supports file or DB storage, JWT-based authentication, and a clean API layer.
 
-- 📄 Create and read Markdown blog posts  
-- 🧠 Supports frontmatter metadata via YAML (`title`, `date`, `tags`)  
-- 🏷 Filter posts by tag via API  
-- 🌐 Serve static HTML, CSS, and JS frontend  
-- 📦 Fully modular TypeScript backend with route controllers  
+---
+
+## 📦 Features
+
+- 📝 Markdown-based blogging with YAML frontmatter
+- 🗂️ Toggle between file or DB storage (via `.env`)
+- 🔒 Token-based authentication (login, protected routes)
+- 🔍 Tag-based filtering and basic search
+- 🧪 Unit tests with ~72%+ coverage
+- 🛠️ Built-in CLI migration tool
+- ☯️ Dark/light mode (frontend)
+- 🧩 Modular architecture (controllers, middleware, utils)
+
+---
 
 ## 🗂️ Project Structure
 
@@ -52,26 +62,31 @@ dev-diary/
 
 - [Deno](https://deno.land/) v1.40+ installed
 
-## 🏃‍♂️ Getting Started
+## 🚀 Getting Started
 
-1. **Clone the repository**
+## 1. Clone the repo
 
-```
-git clone https://github.com/your-username/dev-diary.git
+```bash
+git clone https://github.com/djdips/dev-diary.git
 cd dev-diary
 ```
 
-2. **Run the server**
+## 2. Set up environment (optional)
 
-```
-deno run --allow-net --allow-read --allow-write mod.ts
-```
+Create a .env file:
 
-3. **Open the app**
+```bash
+STORAGE_BACKEND=file  # or "db"
+POSTS_DIR=posts
+```
+If no .env is found, fileStorage will be used by default.
 
+### 3. Run the server
+
+```bash
+npm run start
 ```
-Visit http://localhost:8000 in your browser.
-```
+The server will start at http://localhost:8000 by default.
 
 ## ✍️ Writing a Post
 
@@ -90,26 +105,65 @@ This is your first DevDiary post!
 
 It supports **Markdown** and `code blocks`.
 
-## 🧪 API Endpoints
+## 📁 Storage Backends
 
-- `GET /posts` → List all post slugs  
-- `GET /post/:slug` → Render full HTML content  
-- `GET /post/:slug/meta` → Return metadata (title, date, tags)  
-- `GET /tag/:tagName` → Posts filtered by tag  
-- `POST /post` → Create new post (expects JSON: `{ title, content }`)  
-- `DELETE /post/:slug` → Delete a post by slug  
+You can toggle storage backend via .env or config.ts.
 
-## 🧹 .gitignore
+File Storage
+Stores blog posts as .md files under posts/.
 
-```gitignore
-.DS_Store
-*.log
-node_modules/
-.env
+DB Storage
+Stores posts in SQLite using deno-kv (or custom backend).
+
+Use the migration script to convert from file → db:
+
+```bash
+npm run migrate
 ```
+
+## 🧪 Testing & Coverage
+Run all tests:
+
+```bash
+npm run test
+```
+
+Generate coverage report:
+
+```bash
+npm run coverage
+```
+Creates a full HTML report under coverage/html/.
+
+## 🛠️ API Endpoints
+```
+| Method | Endpoint            | Description             | Auth  |
+| ------ | ------------------- | ----------------------- | ----  |
+| GET    | `/posts`            | Get all posts           | ❌    |
+| GET    | `/posts/:slug`      | Get a post by slug      | ❌    |
+| POST   | `/posts`            | Create a new post       | ✅    |
+| PUT    | `/posts/:slug`      | Edit existing post      | ✅    |
+| DELETE | `/posts/:slug`      | Delete a post           | ✅    |
+| GET    | `/tag/:tagName`     | Filter posts by tag     | ❌    |
+| GET    | `/search?q=keyword` | Search posts (optional) | ❌    |
+| POST   | `/login`            | Login and get token     | ❌    |
+
+```
+   > 🔐 Protected routes require:
+   > Authorization: Bearer <token>
+```
+```
+
+## 🧑‍💻 Contribution Guide
+We welcome contributions!
+
+Steps:
+1. Fork and clone the repo
+2. Create a feature branch (git checkout -b feature-x)
+3. Run tests (deno task test)
+4. Format code (deno fmt && deno lint)
+5. Open a pull request 🚀
 
 ## 📄 License
-
-```
-MIT License
-```
+MIT © 2025 – Dipen Shah
+github.com/djdips/dev-diary

@@ -95,4 +95,25 @@ for (const adapter of [fileStorage, dbStorage]) {
         assertEquals(res.status, 400)
         assertEquals(parsedText?.error, "Content missing")
     })
+
+    Deno.test("editPostBySlug: returns 500 if updatePost throws", async () => {
+            const originalUpdatePost = storage.adapter.savePost
+        
+            // Mock updatePost to throw an error
+            storage.adapter.savePost = () => {
+              throw new Error("Simulated failure")
+            }
+          
+            const req = mockRequest(UPDATED_BODY)
+            const res = await editPostBySlug(req, {
+                pathParams: { slug: TEST_SLUG },
+            })
+            const post = await res.json()
+          
+            assertEquals(res.status, 500)
+            assertEquals(post?.error, "Failed to update post")
+          
+            // Restore original implementation
+            storage.adapter.savePost = originalUpdatePost
+          })
 }

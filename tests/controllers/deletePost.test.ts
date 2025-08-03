@@ -44,4 +44,31 @@ for (const adapter of [fileStorage, dbStorage]) {
             assertEquals(raw, null)
         }
     )
+
+    Deno.test("deletePost: returns 500 if deletePost throws", async () => {
+        const originalDeletePost = storage.adapter.deletePost
+    
+        // Mock deletePost to throw an error
+        storage.adapter.deletePost = () => {
+          throw new Error("Simulated failure")
+        }
+      
+        const req = new Request("http://localhost/posts", {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+      
+        const res = await deletePost(req, {
+          pathParams: { slug: TEST_SLUG },
+        })
+        const post = await res.json()
+      
+        assertEquals(res.status, 500)
+        assertEquals(post?.error, "Failed to delete post")
+      
+        // Restore original implementation
+        storage.adapter.deletePost = originalDeletePost
+      })
 }

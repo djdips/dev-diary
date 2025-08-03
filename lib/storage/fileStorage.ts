@@ -54,8 +54,10 @@ export const fileStorage: StorageAdapter = {
             const matched: string[] = []
             for (const slug of slugs) {
                 const meta = await this.getMetadata(slug)
-                if (meta?.tags?.includes(tag)) {
-                    matched.push(slug)
+                const tags = meta?.tags ?? [];
+
+                if (tags.some(t => t.toLowerCase() === tag.toLowerCase())) {
+                    matched.push(slug);
                 }
             }
             return matched

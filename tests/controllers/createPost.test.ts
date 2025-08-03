@@ -42,6 +42,15 @@ Deno.test("createPost: fileStorage - save and retrieve post", async () => {
     assertMatch(raw!, /Hello DB!/)
 })
 
+Deno.test("Edge: createPost with special characters in slug", async () => {
+    const res = await createPost(
+      mockRequest({ title: "Special Slug 🚀", content: "Hello Special Slug!" }),
+      { pathParams: { slug: "special-slug_123-🚀" }, queryParams: {} }
+    );
+  
+    assertEquals(res.status, 201);
+  });
+
 Deno.test(
     "createPost: returns 400 if title or content is missing",
     async () => {
@@ -86,3 +95,63 @@ Deno.test("createPost: returns 201 for valid input", async () => {
     assertEquals(res.status, 201)
     assertEquals(text, "Post saved")
 })
+
+Deno.test("createPost: fileStorage returns 500 if savePost throws", async () => {
+  storage.adapter = fileStorage
+    const originalSavePost = storage.adapter.savePost
+
+    // Mock savePost to throw an error
+    storage.adapter.savePost = () => {
+      throw new Error("Simulated failure")
+    }
+  
+    const req = new Request("http://localhost/posts", {
+      method: "POST",
+      body: JSON.stringify({
+        title: "Test Error Post",
+        content: "This will trigger a simulated save error.",
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+  
+    const res = await createPost(req)
+    const text = await res.json()
+  
+    assertEquals(res.status, 500)
+    assertEquals(text?.error, "Failed to save post")
+  
+    // Restore original implementation
+    storage.adapter.savePost = originalSavePost
+  })
+
+  Deno.test("createPost: dbStorage returns 500 if savePost throws", async () => {
+  storage.adapter = dbStorage
+  const originalSavePost = storage.adapter.savePost
+
+    // Mock savePost to throw an error
+    storage.adapter.savePost = () => {
+      throw new Error("Simulated failure")
+    }
+  
+    const req = new Request("http://localhost/posts", {
+      method: "POST",
+      body: JSON.stringify({
+        title: "Test Error Post",
+        content: "This will trigger a simulated save error.",
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+  
+    const res = await createPost(req)
+    const text = await res.json()
+  
+    assertEquals(res.status, 500)
+    assertEquals(text?.error, "Failed to save post")
+  
+    // Restore original implementation
+    storage.adapter.savePost = originalSavePost
+  })

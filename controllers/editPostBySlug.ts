@@ -13,16 +13,12 @@ export async function editPostBySlug(
     const body = await req.json()
     const { content } = body
 
-    if (!content) {
-        return errorResponse("Content missing", 400)
-    }
-
     if (!validateSlug(slug)) {
         return errorResponse("Invalid slug", 400)
     }
 
     if (!validatePostContent(content)) {
-        return errorResponse("Content cannot be empty", 400)
+        return errorResponse("Content missing", 400)
     }
 
     try {

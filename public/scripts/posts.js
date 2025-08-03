@@ -47,6 +47,7 @@ export async function fetchPosts() {
         slugs.forEach(slug => {
             const li = document.createElement("li")
             li.textContent = slug
+            li.setAttribute("data-slug", slug);
             li.classList.add("post-item")
             li.onclick = () => showPost(slug)
             postsList.appendChild(li)
